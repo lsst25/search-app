@@ -1,0 +1,16 @@
+<div class="container-fluid">
+    <input class="form-control mb-3 mt-2"
+           type="search"
+           placeholder="Type to search"
+           aria-label="Search"
+           [formControl]="searchInput"
+           (input)="onInput()"
+    >
+    <ng-container *ngIf="(searchResults$ | async) as searchResults">
+        <ol class="results-list">
+            <li *ngFor="let result of searchResults">
+                <app-search-result-tile [searchItem]="result"></app-search-result-tile>
+            </li>
+        </ol>
+    </ng-container>
+</div>

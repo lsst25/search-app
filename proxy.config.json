@@ -1,0 +1,11 @@
+{
+  "/proxy": {
+    "target": "https://serpapi.com/",
+    "secure": false,
+    "pathRewrite": {
+      "^/proxy": ""
+    },
+    "logLevel": "debug",
+    "changeOrigin": true
+  }
+}

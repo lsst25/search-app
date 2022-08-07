@@ -3,7 +3,10 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  SEARCH_API_URL: '/proxy',
+  // SEARCH_API_URL: 'http://localhost:1111',
+  SEARCH_API_KEY: '889e21fe08754bf1d4d2023087a5de5de1ef21a13372f2d770af312335286771'
 };
 
 /*
