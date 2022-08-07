@@ -1,12 +1,16 @@
-<div class="container-fluid">
+<div class="container-fluid"
+     infiniteScroll
+     [infiniteScrollDistance]="2"
+     [infiniteScrollThrottle]="50"
+     (scrolled)="onScroll()">
+
     <input class="form-control mb-3 mt-2"
            type="search"
            placeholder="Type to search"
            aria-label="Search"
-           [formControl]="searchInput"
-           (input)="onInput()"
-    >
-    <ng-container *ngIf="(searchResults$ | async) as searchResults">
+           [formControl]="searchInput">
+
+    <ng-container *ngIf="searchResults">
         <ol class="results-list">
             <li *ngFor="let result of searchResults">
                 <app-search-result-tile [searchItem]="result"></app-search-result-tile>

@@ -5,6 +5,7 @@ import {HomeRoutingModule} from './home-routing.module';
 import {HomeComponent} from './home.component';
 import {SearchResultTileComponent} from './search-result-tile/search-result-tile.component';
 import {ReactiveFormsModule} from "@angular/forms";
+import {InfiniteScrollModule} from "ngx-infinite-scroll";
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import {ReactiveFormsModule} from "@angular/forms";
     imports: [
         CommonModule,
         HomeRoutingModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        InfiniteScrollModule
     ]
 })
 export class HomeModule {

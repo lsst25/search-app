@@ -1,8 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl} from "@angular/forms";
 import {SearchService} from "../core/search/search.service";
-import {liveSearch} from "../shared/helpers/operators";
-import {Subject} from "rxjs";
+import {SearchResult} from "../core/search/search.interface";
 
 @Component({
     selector: 'app-home',
@@ -12,22 +11,26 @@ import {Subject} from "rxjs";
 export class HomeComponent implements OnInit {
     public searchInput = new FormControl('');
 
-    private searchValueSubject = new Subject<string>();
+    public searchResults: SearchResult[] = [];
 
-    readonly searchResults$ = this.searchValueSubject.pipe(
-        liveSearch(searchValue => this.search.getSearchResults(searchValue, 0), 2500)
-    );
-
-    constructor(private search: SearchService) {
-    }
+    constructor(private search: SearchService) {}
 
     ngOnInit(): void {
+        this.search.searchResultsSubject.subscribe(
+            results => this.searchResults = [...results]
+        )
+
+        this.searchInput.valueChanges.subscribe(
+            value => {
+                if (value === null) {
+                    return;
+                }
+                this.search.performLiveSearch(value);
+            }
+        )
     }
 
-    onInput() {
-        if (!this.searchInput.value) {
-            return;
-        }
-        this.searchValueSubject.next(this.searchInput.value);
+    public onScroll():void {
+        this.search.loadResults();
     }
 }

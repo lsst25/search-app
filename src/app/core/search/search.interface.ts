@@ -9,4 +9,9 @@ export interface SearchResult {
 export interface SearchResponse {
     organic_results: SearchResult[];
     error?: string;
+    search_information: SearchInformation;
+}
+
+export interface SearchInformation {
+    total_results: number;
 }

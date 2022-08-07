@@ -8,6 +8,7 @@ import {LayoutComponent} from './layout/layout.component';
 import {NavbarComponent} from './layout/navbar/navbar.component';
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {SearchRequestsInterceptor} from "./http/search-requests.interceptor";
+import {InfiniteScrollModule} from "ngx-infinite-scroll";
 
 @NgModule({
     declarations: [
