@@ -6,13 +6,7 @@ import {Observable, of} from "rxjs";
 import {NEWS_RESPONSE, SEARCH_RESPONSE} from "../../mocks/mock-consts";
 import {NewsSearchResponse, SearchResponse} from "./search.interface";
 
-class SearchHttpMock {
-    constructor() {}
-    search(searchValue: string, items: number, itemsNumber: number, mode?: 'news'): Observable<SearchResponse|NewsSearchResponse> {
-        console.log('MOCK CALLED')
-        return mode === 'news' ? of(NEWS_RESPONSE) : of(SEARCH_RESPONSE);
-    }
-}
+
 
 describe('SearchService', () => {
     let service: SearchService;

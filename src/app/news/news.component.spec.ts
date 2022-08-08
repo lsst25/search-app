@@ -3,13 +3,13 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {NewsComponent} from './news.component';
 import {ReactiveFormsModule} from "@angular/forms";
 import {NO_ERRORS_SCHEMA} from "@angular/core";
-import {SearchService} from "../core/search/search.service";
 import {SearchServiceMock} from "../mocks/search-service-mock";
+import {SearchHttpService} from "../core/search/search-http.service";
 
 describe('NewsComponent', () => {
     let component: NewsComponent;
     let fixture: ComponentFixture<NewsComponent>;
-    let searchService: SearchService;
+    let searchService: SearchHttpService;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
@@ -18,7 +18,7 @@ describe('NewsComponent', () => {
             schemas: [NO_ERRORS_SCHEMA],
             providers: [
                 {
-                    provide: SearchService,
+                    provide: SearchHttpService,
                     useClass: SearchServiceMock
                 }
             ]
@@ -26,7 +26,7 @@ describe('NewsComponent', () => {
 
         fixture = TestBed.createComponent(NewsComponent);
         component = fixture.componentInstance;
-        searchService = TestBed.inject(SearchService);
+        searchService = TestBed.inject(SearchHttpService);
         fixture.detectChanges();
     });
 
@@ -34,16 +34,16 @@ describe('NewsComponent', () => {
         expect(component).toBeTruthy();
     });
 
-    it('should call initLatestNews of Search Service on init', () => {
-        const spy = spyOn(searchService, 'initLatestNews');
+    it('should call search method of Search Service on init', () => {
+        const spy = spyOn(searchService, 'search');
         component.ngOnInit();
 
         expect(spy).toHaveBeenCalledTimes(1);
     });
 
-    it('should call loadLatestNews of Search Service in onScroll', () => {
-        const spy = spyOn(searchService, 'loadLatestNews');
-        component.onScroll();
+    it('should call search method of Search Service after calling loadLatestNews', () => {
+        const spy = spyOn(searchService, 'search');
+        component.loadLatestNews()
 
         expect(spy).toHaveBeenCalledTimes(1);
     });

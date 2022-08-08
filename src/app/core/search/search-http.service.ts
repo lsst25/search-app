@@ -13,13 +13,13 @@ export class SearchHttpService {
 
     public search(
         searchValue: string,
-        items: number,
+        itemsOffset: number,
         itemsNumber: number,
         mode?: string): Observable<SearchResponse | NewsSearchResponse> {
 
         const paramsObj: SearchParamsObject = {
             q: searchValue,
-            start: items,
+            start: itemsOffset,
             num: itemsNumber,
         };
 
