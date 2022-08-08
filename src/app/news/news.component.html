@@ -1,4 +1,9 @@
-<div class="container-fluid mt-2">
+<div class="container-fluid mt-2"
+     infiniteScroll
+     [infiniteScrollDistance]="2"
+     [infiniteScrollThrottle]="50"
+     (scrolled)="onScroll()"
+>
     <ng-container *ngIf="newsResults">
         <ol class="results-list">
 

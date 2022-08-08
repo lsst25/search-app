@@ -32,3 +32,10 @@ export interface NewsResult {
     thumbnail: string;
     title: string;
 }
+
+export interface SearchParamsObject {
+    q: string,
+    start: number,
+    num: number,
+    tbm?: 'nws'
+}

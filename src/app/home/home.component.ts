@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {FormControl} from "@angular/forms";
 import {SearchService} from "../core/search/search.service";
 import {SearchResult} from "../core/search/search.interface";
@@ -7,7 +7,8 @@ import {Observable} from "rxjs";
 @Component({
     selector: 'app-home',
     templateUrl: './home.component.html',
-    styleUrls: ['./home.component.scss']
+    styleUrls: ['./home.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HomeComponent implements OnInit {
     public searchInput = new FormControl('');
