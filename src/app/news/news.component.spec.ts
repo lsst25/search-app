@@ -5,6 +5,10 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {NO_ERRORS_SCHEMA} from "@angular/core";
 import {SearchServiceMock} from "../mocks/search-service-mock";
 import {SearchHttpService} from "../core/search/search-http.service";
+import {NEWS_RESPONSE, NEWS_RESULTS} from "../mocks/mock-consts";
+import {of} from "rxjs";
+
+const PAGINATION_STEP: number = 20;
 
 describe('NewsComponent', () => {
     let component: NewsComponent;
@@ -34,17 +38,47 @@ describe('NewsComponent', () => {
         expect(component).toBeTruthy();
     });
 
-    it('should call search method of Search Service on init', () => {
-        const spy = spyOn(searchService, 'search');
+    it('should call search method of SearchHttpService on init', () => {
+        const spy = spyOn(searchService, 'search').and.callThrough();
         component.ngOnInit();
 
         expect(spy).toHaveBeenCalledTimes(1);
     });
 
-    it('should call search method of Search Service after calling loadLatestNews', () => {
-        const spy = spyOn(searchService, 'search');
-        component.loadLatestNews()
+    it('should call search method of SearchHttpService after calling loadLatestNews', () => {
+        const spy = spyOn(searchService, 'search').and.callThrough();
+        component.loadLatestNews();
 
         expect(spy).toHaveBeenCalledTimes(1);
     });
+
+    it('should call resetNews method after init',() => {
+        const spy = spyOn<any>(component, 'resetNews');
+        component.ngOnInit();
+
+        expect(spy).toHaveBeenCalledTimes(1);
+    });
+
+    it('should increment pagination', () => {
+
+        expect(component['paginationOffset']).toBe(PAGINATION_STEP);
+    });
+
+    it('should increment pagination when loading pagination', () => {
+        component.loadLatestNews();
+
+        expect(component['paginationOffset']).toBe(PAGINATION_STEP * 2);
+    });
+
+    it('should get NewsResults from NewsResponse and provide it to local property newsResults array', () => {
+
+        expect(component.newsResults).toEqual(NEWS_RESULTS);
+    });
+
+    it('should add new results to newsResults array when loading pagination', () => {
+        component.loadLatestNews()
+
+        expect(component.newsResults).toEqual([...NEWS_RESULTS, ...NEWS_RESULTS]);
+    });
+
 });

@@ -4,7 +4,10 @@
      [infiniteScrollThrottle]="50"
      (scrolled)="loadSearchResults()">
 
-    <form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="searchForm"
+          (ngSubmit)="onSubmit()"
+          data-testid="search-form"
+    >
         <div class="input-group mb-3 mt-2">
             <input type="search"
                    class="form-control"

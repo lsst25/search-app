@@ -8,7 +8,6 @@ export class SearchServiceMock {
     constructor() {}
 
     search(searchValue: string, items: number, itemsNumber: number, mode?: 'news'): Observable<SearchResponse|NewsSearchResponse> {
-        console.log('MOCK CALLED')
         return mode === 'news' ? of(NEWS_RESPONSE) : of(SEARCH_RESPONSE);
     }
 }

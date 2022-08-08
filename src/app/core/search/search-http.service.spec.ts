@@ -34,7 +34,7 @@ describe('SearchHttpService', () => {
         request.flush(SEARCH_RESPONSE);
         controller.verify();
 
-        expect(actualResult).toEqual(SEARCH_RESPONSE)
+        expect(actualResult).toEqual(SEARCH_RESPONSE);
     });
 
     it('should be called with appropriate params and return NewsResponse when called with mode argument "news"', () => {
@@ -50,6 +50,6 @@ describe('SearchHttpService', () => {
         request.flush(NEWS_RESPONSE);
         controller.verify();
 
-        expect(actualResult).toEqual(NEWS_RESPONSE)
+        expect(actualResult).toEqual(NEWS_RESPONSE);
     });
 });

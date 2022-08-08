@@ -37,11 +37,9 @@ export const NEWS_RESULTS: NewsResult[] = [
 export const  SEARCH_RESPONSE: SearchResponse = {
     search_information: { total_results: 300 },
     organic_results: SEARCH_RESULTS,
-    error: 'test_error'
 }
 
 export const  NEWS_RESPONSE: NewsSearchResponse = {
     search_information: { total_results: 300 },
     news_results: NEWS_RESULTS,
-    error: 'test_error'
 }

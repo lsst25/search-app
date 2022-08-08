@@ -7,7 +7,6 @@ import {SearchHttpService} from "../core/search/search-http.service";
 @Component({
     selector: 'app-home',
     templateUrl: './home.component.html',
-    styleUrls: ['./home.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HomeComponent {
