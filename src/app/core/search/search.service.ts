@@ -1,8 +1,8 @@
 import {Injectable, OnDestroy} from '@angular/core';
-import {HttpClient, HttpParams} from "@angular/common/http";
 import {BehaviorSubject, map, Observable, Subject, Subscription, tap} from "rxjs";
-import {NewsResult, NewsSearchResponse, SearchParamsObject, SearchResponse, SearchResult} from "./search.interface";
+import {NewsResult, SearchResult} from "./search.interface";
 import {liveSearch} from "../../shared/helpers/operators";
+import {SearchHttpService} from "./search-http.service";
 
 @Injectable({
     providedIn: 'root'
@@ -12,21 +12,21 @@ export class SearchService implements OnDestroy {
     private readonly PAGINATION_STEP = 20;
     private readonly LIVE_SEARCH_DELAY = 1250;
 
+    public searchResultsSubject = new BehaviorSubject<SearchResult[]>([]);
+    public latestNewsSubject = new BehaviorSubject<NewsResult[]>([]);
+
     private searchPaginationOffset = 0;
     private totalSearchResults = 0;
 
     private isLoadingSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     public isLoading$: Observable<boolean> = this.isLoadingSubject.asObservable();
 
-
-    public searchResultsSubject = new BehaviorSubject<SearchResult[]>([]);
     private currentSearchValue = '';
     private searchValueSubject = new Subject<string>();
     private readonly liveSearchSubject = this.searchValueSubject.pipe(
         liveSearch(searchValue => this.getSearchResults(searchValue, this.searchPaginationOffset), this.LIVE_SEARCH_DELAY),
     );
 
-    public latestNewsSubject = new BehaviorSubject<NewsResult[]>([]);
     private totalNewsResults = 0;
     private newsPaginationOffset = 0;
 
@@ -38,7 +38,7 @@ export class SearchService implements OnDestroy {
         return this.latestNewsSubject.getValue();
     }
 
-    constructor(private http: HttpClient) {}
+    constructor(private searchHttp: SearchHttpService) {}
 
     public performLiveSearch(searchValue: string): void {
         if (!searchValue) {
@@ -131,23 +131,8 @@ export class SearchService implements OnDestroy {
         return this.getNewsResults('latest', offset);
     }
 
-    private search(searchValue: string, items: number, mode?: 'news'): Observable<SearchResponse|NewsSearchResponse> {
-        const paramsObj: SearchParamsObject = {
-            q: searchValue,
-            start: items,
-            num: this.PAGINATION_STEP
-        };
-
-        if (mode === 'news') {
-            paramsObj.tbm = 'nws';
-        }
-
-        const params = new HttpParams({fromObject: paramsObj} as any);
-        return this.http.get<SearchResponse>('/search.json', {params});
-    }
-
     private getSearchResults(searchValue: string, items: number): Observable<SearchResult[]> {
-        return this.search(searchValue, items)
+        return this.searchHttp.search(searchValue, items, this.PAGINATION_STEP)
             .pipe(
                 tap(response => this.totalSearchResults = response.search_information.total_results),
                 map(response => {
@@ -158,7 +143,7 @@ export class SearchService implements OnDestroy {
     }
 
     private getNewsResults(searchValue: string, items: number): Observable<NewsResult[]> {
-        return this.search(searchValue, items, 'news')
+        return this.searchHttp.search(searchValue, items, this.PAGINATION_STEP, 'news')
             .pipe(
                 tap(response => this.totalNewsResults = response.search_information.total_results),
                 map(response => {

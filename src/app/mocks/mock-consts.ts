@@ -1,4 +1,4 @@
-import {SearchResult, NewsResult} from "../core/search/search.interface";
+import {SearchResult, NewsResult, SearchResponse, NewsSearchResponse} from "../core/search/search.interface";
 
 export const SEARCH_RESULTS: SearchResult[] = [
     {
@@ -33,3 +33,15 @@ export const NEWS_RESULTS: NewsResult[] = [
         thumbnail: 'test',
     }
 ];
+
+export const  SEARCH_RESPONSE: SearchResponse = {
+    search_information: { total_results: 300 },
+    organic_results: SEARCH_RESULTS,
+    error: 'test_error'
+}
+
+export const  NEWS_RESPONSE: NewsSearchResponse = {
+    search_information: { total_results: 300 },
+    news_results: NEWS_RESULTS,
+    error: 'test_error'
+}
