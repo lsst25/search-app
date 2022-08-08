@@ -1,8 +1,8 @@
-import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {FormControl} from "@angular/forms";
-import {SearchService} from "../core/search/search.service";
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component} from '@angular/core';
+import {FormControl, FormGroup} from "@angular/forms";
 import {SearchResult} from "../core/search/search.interface";
-import {Observable, Subject} from "rxjs";
+import {BehaviorSubject, finalize, map, Observable, tap} from "rxjs";
+import {SearchHttpService} from "../core/search/search-http.service";
 
 @Component({
     selector: 'app-home',
@@ -11,26 +11,102 @@ import {Observable, Subject} from "rxjs";
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HomeComponent {
-    public searchInput = new FormControl('');
+    private readonly PAGINATION_STEP: number = 20;
 
-    constructor(private search: SearchService) {}
+    private paginationOffset: number = 0;
+    private totalSearchResults: number = 0;
+    private currentSearchValue: string = '';
 
-    public get isLoading$(): Observable<boolean> {
-        return this.search.isLoading$;
-    }
+    private isLoadingSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+    private isLoadingPaginationSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-    public get searchResults$(): Subject<SearchResult[]> {
-        return this.search.searchResultsSubject;
-    }
+    public isLoading$: Observable<boolean> = this.isLoadingSubject.asObservable();
+    public isLoadingPagination$: Observable<boolean> = this.isLoadingPaginationSubject.asObservable();
 
-    public onInput(): void {
-        if (this.searchInput.value === null) {
+    public searchResults: SearchResult[] = [];
+
+    public searchForm = new FormGroup({
+        searchInput: new FormControl('')
+    });
+
+    constructor(private searchHttp: SearchHttpService,
+                private cd: ChangeDetectorRef
+    ) {}
+
+    public onSubmit(): void {
+        if (!this.searchForm.get('searchInput')!.value) {
             return;
         }
-        this.search.performLiveSearch(this.searchInput.value);
+
+        this.initSearch(this.searchForm.get('searchInput')!.value as string);
     }
 
-    public onScroll():void {
-        this.search.loadSearchResults();
+    public initSearch(searchValue: string): void {
+        this.resetSearch();
+        this.isLoadingSubject.next(true);
+        this.currentSearchValue = searchValue;
+
+        this.getSearchResults(searchValue, this.paginationOffset).pipe(
+            finalize(() => this.isLoadingSubject.next(false))
+        )
+            .subscribe(result => {
+                this.searchResults = [...result];
+                this.incrementPaginationOffset();
+                this.cd.markForCheck();
+            })
+    }
+
+    public loadSearchResults(): void {
+        if (this.searchResults.length >= this.totalSearchResults || !this.currentSearchValue) {
+            return;
+        }
+
+        const previousSearchResults = [...this.searchResults];
+
+        this.isLoadingPaginationSubject.next(true);
+
+        this.getSearchResults(this.currentSearchValue, this.paginationOffset).pipe(
+            finalize(() => this.isLoadingPaginationSubject.next(false))
+             )
+            .subscribe({
+                next: result => {
+                    this.searchResults = [...previousSearchResults, ...result];
+                    this.cd.markForCheck();
+                },
+                error: () => {
+                    this.searchResults = [...previousSearchResults];
+                    this.canselPaginationOffset();
+                    this.cd.markForCheck();
+                }
+            });
+        this.incrementPaginationOffset();
+    }
+
+    private resetSearch(): void {
+        this.paginationOffset = 0;
+        this.totalSearchResults = 0;
+    }
+
+    private incrementPaginationOffset(): void {
+        this.paginationOffset += this.PAGINATION_STEP;
+    }
+
+    private canselPaginationOffset(): void {
+        this.paginationOffset -= this.PAGINATION_STEP;
+    }
+
+    private getSearchResults(searchValue: string, items: number): Observable<SearchResult[]> {
+        return this.searchHttp.search(searchValue, items, this.PAGINATION_STEP)
+            .pipe(
+                tap(response => this.totalSearchResults = response.search_information.total_results),
+                map(response => {
+                    if (!('organic_results' in response)) return [];
+                    return response.error ? [] : response.organic_results
+                }),
+            );
+    }
+
+    public trackByFn(index: number, {title}: SearchResult): string {
+        return title;
     }
 }

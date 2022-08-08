@@ -41,7 +41,7 @@ describe('SearchService', () => {
             let isLoading = false;
             service.isLoading$.subscribe(state => isLoading = state);
 
-            service.performLiveSearch('test');
+            service.initSearch('test');
 
             expect(isLoading).toBe(true);
         });
@@ -49,13 +49,13 @@ describe('SearchService', () => {
         it('should call resetSearch method',() => {
             const spy = spyOn<any>(service, 'resetSearch');
 
-            service.performLiveSearch('test');
+            service.initSearch('test');
 
             expect(spy).toHaveBeenCalledTimes(1);
         });
 
         it('should set currentSearchValue to the provided argument value',() => {
-            service.performLiveSearch('test-value');
+            service.initSearch('test-value');
 
             expect(service['currentSearchValue']).toBe('test-value');
         });

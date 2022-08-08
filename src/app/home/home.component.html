@@ -1,30 +1,40 @@
 <div class="container-fluid"
      infiniteScroll
-     [infiniteScrollDistance]="2"
+     [infiniteScrollDistance]="2.5"
      [infiniteScrollThrottle]="50"
-     (scrolled)="onScroll()"
-     (input)="onInput()">
+     (scrolled)="loadSearchResults()">
 
-    <input class="form-control mb-3 mt-2"
-           type="search"
-           placeholder="Type to search"
-           aria-label="Search"
-           [formControl]="searchInput"
-           data-testid="search-input"
-    >
+    <form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
+        <div class="input-group mb-3 mt-2">
+            <input type="search"
+                   class="form-control"
+                   placeholder="Search"
+                   aria-label="Recipient's username"
+                   [formControlName]="'searchInput'"
+                   data-testid="search-input">
 
-    <ng-container *ngIf="(searchResults$ | async) as searchResults">
-        <ol class="results-list"
-            *ngIf="!(isLoading$ | async); else loader">
-            <li *ngFor="let result of searchResults">
-                <app-search-result-tile [searchItem]="result"></app-search-result-tile>
-            </li>
-        </ol>
+            <button class="btn btn-outline-primary"
+                    type="submit">
+                Search
+            </button>
+        </div>
+    </form>
+
+
+    <ol class="results-list"
+        *ngIf="!(isLoading$ | async); else loader">
+        <li *ngFor="let result of searchResults; trackBy: trackByFn">
+            <app-search-result-tile [searchItem]="result"></app-search-result-tile>
+        </li>
+    </ol>
+    <ng-container *ngIf="(isLoadingPagination$ | async)"
+                  [ngTemplateOutlet]="loader">
     </ng-container>
 </div>
 
 <ng-template #loader>
-    <div class="d-flex justify-content-center">
+    <div class="d-flex justify-content-center mb-3 text-primary"
+         [ngClass]="{'fixed-bottom': isLoadingPagination$ | async}">
         <div class="spinner-border mt-2" role="status">
             <span class="visually-hidden">Loading...</span>
         </div>
