@@ -26,9 +26,7 @@ export interface NewsSearchResponse extends BaseResponse {
 export interface NewsResult {
     date: string;
     link: string;
-    position: number;
     snippet: string;
-    source: string;
     thumbnail: string;
     title: string;
 }

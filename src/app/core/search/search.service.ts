@@ -1,15 +1,16 @@
-import {Injectable} from '@angular/core';
+import {Injectable, OnDestroy} from '@angular/core';
 import {HttpClient, HttpParams} from "@angular/common/http";
-import {BehaviorSubject, map, Observable, Subject, tap} from "rxjs";
+import {BehaviorSubject, map, Observable, Subject, Subscription, tap} from "rxjs";
 import {NewsResult, NewsSearchResponse, SearchParamsObject, SearchResponse, SearchResult} from "./search.interface";
 import {liveSearch} from "../../shared/helpers/operators";
 
 @Injectable({
     providedIn: 'root'
 })
-export class SearchService {
-    private readonly PAGINATION_STEP = 10;
-    private readonly LIVE_SEARCH_DELAY = 1500;
+export class SearchService implements OnDestroy {
+    private subscriptions: Subscription = new Subscription();
+    private readonly PAGINATION_STEP = 20;
+    private readonly LIVE_SEARCH_DELAY = 1250;
 
     private searchPaginationOffset = 0;
     private totalSearchResults = 0;
@@ -21,7 +22,7 @@ export class SearchService {
     public searchResultsSubject = new BehaviorSubject<SearchResult[]>([]);
     private currentSearchValue = '';
     private searchValueSubject = new Subject<string>();
-    public readonly liveSearchSubject = this.searchValueSubject.pipe(
+    private readonly liveSearchSubject = this.searchValueSubject.pipe(
         liveSearch(searchValue => this.getSearchResults(searchValue, this.searchPaginationOffset), this.LIVE_SEARCH_DELAY),
     );
 
@@ -29,11 +30,11 @@ export class SearchService {
     private totalNewsResults = 0;
     private newsPaginationOffset = 0;
 
-    public get searchResults(): SearchResult[] {
+    private get searchResults(): SearchResult[] {
         return this.searchResultsSubject.getValue();
     }
 
-    public get newsResults(): NewsResult[] {
+    private get newsResults(): NewsResult[] {
         return this.latestNewsSubject.getValue();
     }
 
@@ -51,50 +52,59 @@ export class SearchService {
         this.currentSearchValue = searchValue;
 
         this.searchValueSubject.next(this.currentSearchValue);
-        this.liveSearchSubject.subscribe(result => {
-            this.searchResultsSubject.next(result);
-            this.isLoadingSubject.next(false);
-            this.incrementSearchPaginationOffset();
-        });
+
+        this.subscriptions.add(
+            this.liveSearchSubject.subscribe(result => {
+                this.searchResultsSubject.next(result);
+                this.isLoadingSubject.next(false);
+                this.incrementSearchPaginationOffset();
+            })
+        );
     }
 
     public initLatestNews(): void {
         this.resetNews();
 
-        this.getLatestNews(this.newsPaginationOffset).subscribe(
-            news => {
-                this.latestNewsSubject.next([...news]);
-                this.incrementNewsPaginationOffset();
-            }
-        )
+        this.subscriptions.add(
+            this.getLatestNews(this.newsPaginationOffset).subscribe(
+                news => {
+                    this.latestNewsSubject.next([...news]);
+                    this.incrementNewsPaginationOffset();
+                }
+            )
+        );
     }
 
-    public loadLatestNews() {
+    public loadLatestNews(): void {
         if (this.newsResults.length >= this.totalNewsResults) {
             return;
         }
         const previousNews = this.newsResults;
 
-        this.getNewsResults('latest', this.newsPaginationOffset).subscribe(
-            news => {
-                this.latestNewsSubject.next([...previousNews, ...news]);
-                this.incrementNewsPaginationOffset();
-            }
-        )
+        this.subscriptions.add(
+            this.getNewsResults('latest', this.newsPaginationOffset).subscribe(
+                news => {
+                    this.latestNewsSubject.next([...previousNews, ...news]);
+                    this.incrementNewsPaginationOffset();
+                }
+            )
+        );
     }
 
 
-    public loadResults(): void {
+    public loadSearchResults(): void {
         if (this.searchResults.length >= this.totalSearchResults || !this.currentSearchValue) {
             return;
         }
         const previousSearchResults = this.searchResults;
 
-        this.getSearchResults(this.currentSearchValue, this.searchPaginationOffset)
-            .subscribe(result => {
-                this.searchResultsSubject.next([...previousSearchResults, ...result])
-                this.incrementSearchPaginationOffset();
-            });
+        this.subscriptions.add(
+            this.getSearchResults(this.currentSearchValue, this.searchPaginationOffset)
+                .subscribe(result => {
+                    this.searchResultsSubject.next([...previousSearchResults, ...result])
+                    this.incrementSearchPaginationOffset();
+                })
+        );
     }
 
     private resetSearch(): void {
@@ -156,5 +166,9 @@ export class SearchService {
                     return response.error ? [] : response.news_results
                 }),
             );
+    }
+
+    public ngOnDestroy() {
+        this.subscriptions.unsubscribe();
     }
 }

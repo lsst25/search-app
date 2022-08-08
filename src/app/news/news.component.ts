@@ -1,29 +1,26 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {SearchService} from "../core/search/search.service";
 import {NewsResult} from "../core/search/search.interface";
+import {Subject} from "rxjs";
 
 @Component({
-  selector: 'app-news',
-  templateUrl: './news.component.html',
-  styleUrls: ['./news.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-news',
+    templateUrl: './news.component.html',
+    styleUrls: ['./news.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NewsComponent implements OnInit {
-  public newsResults: NewsResult[] = [];
+    constructor(private search: SearchService) {}
 
-  constructor(private search: SearchService, private cd: ChangeDetectorRef) { }
+    public get newsResults$(): Subject<NewsResult[]> {
+        return this.search.latestNewsSubject;
+    }
 
-  ngOnInit(): void {
-    this.search.latestNewsSubject.subscribe(
-        news => {
-          this.newsResults = [...news];
-          this.cd.markForCheck();
-        }
-    )
-    this.search.initLatestNews();
-  }
+    public ngOnInit(): void {
+        this.search.initLatestNews();
+    }
 
-  public onScroll(): void {
-      this.search.loadLatestNews();
-  }
+    public onScroll(): void {
+        this.search.loadLatestNews();
+    }
 }

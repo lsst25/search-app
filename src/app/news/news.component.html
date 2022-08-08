@@ -4,9 +4,8 @@
      [infiniteScrollThrottle]="50"
      (scrolled)="onScroll()"
 >
-    <ng-container *ngIf="newsResults">
+    <ng-container *ngIf="(newsResults$ | async) as newsResults">
         <ol class="results-list">
-
             <li *ngFor="let result of newsResults">
                 <app-news-tile [newsItem]="result"></app-news-tile>
             </li>

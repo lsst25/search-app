@@ -9,9 +9,11 @@
            type="search"
            placeholder="Type to search"
            aria-label="Search"
-           [formControl]="searchInput">
+           [formControl]="searchInput"
+           data-testid="search-input"
+    >
 
-    <ng-container *ngIf="searchResults">
+    <ng-container *ngIf="(searchResults$ | async) as searchResults">
         <ol class="results-list"
             *ngIf="!(isLoading$ | async); else loader">
             <li *ngFor="let result of searchResults">

@@ -1,8 +1,8 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {FormControl} from "@angular/forms";
 import {SearchService} from "../core/search/search.service";
 import {SearchResult} from "../core/search/search.interface";
-import {Observable} from "rxjs";
+import {Observable, Subject} from "rxjs";
 
 @Component({
     selector: 'app-home',
@@ -10,21 +10,17 @@ import {Observable} from "rxjs";
     styleUrls: ['./home.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent {
     public searchInput = new FormControl('');
-
-    public searchResults: SearchResult[] = [];
 
     constructor(private search: SearchService) {}
 
-    get isLoading$(): Observable<boolean> {
+    public get isLoading$(): Observable<boolean> {
         return this.search.isLoading$;
     }
 
-    ngOnInit(): void {
-        this.search.searchResultsSubject.subscribe(
-            results => this.searchResults = [...results]
-        )
+    public get searchResults$(): Subject<SearchResult[]> {
+        return this.search.searchResultsSubject;
     }
 
     public onInput(): void {
@@ -35,6 +31,6 @@ export class HomeComponent implements OnInit {
     }
 
     public onScroll():void {
-        this.search.loadResults();
+        this.search.loadSearchResults();
     }
 }
