@@ -1,4 +1,4 @@
-import {Observable} from 'rxjs';
+import {Observable, share} from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 
 export function liveSearch<T, R>(
@@ -8,6 +8,7 @@ export function liveSearch<T, R>(
     return (source$: Observable<T>) => source$.pipe(
         debounceTime(delay),
         distinctUntilChanged(),
-        switchMap(callback)
+        switchMap(callback),
+        share()
     )
 }

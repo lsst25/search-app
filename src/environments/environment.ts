@@ -6,7 +6,7 @@ export const environment = {
   production: false,
   SEARCH_API_URL: '/proxy',
   // SEARCH_API_URL: 'http://localhost:1111',
-  SEARCH_API_KEY: '889e21fe08754bf1d4d2023087a5de5de1ef21a13372f2d770af312335286771'
+  SEARCH_API_KEY: 'b1deb659a6b3dd9bc189a1f50ac5b2dccfd153f3b9e2bf2ea5a9ffdaad4c0230'
 };
 
 /*

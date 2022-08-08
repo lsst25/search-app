@@ -2,3 +2,9 @@
 
 /* Importing Bootstrap SCSS file. */
 @import '~bootstrap/scss/bootstrap';
+
+ol, ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}

@@ -2,7 +2,8 @@
      infiniteScroll
      [infiniteScrollDistance]="2"
      [infiniteScrollThrottle]="50"
-     (scrolled)="onScroll()">
+     (scrolled)="onScroll()"
+     (input)="onInput()">
 
     <input class="form-control mb-3 mt-2"
            type="search"
@@ -11,10 +12,19 @@
            [formControl]="searchInput">
 
     <ng-container *ngIf="searchResults">
-        <ol class="results-list">
+        <ol class="results-list"
+            *ngIf="!(isLoading$ | async); else loader">
             <li *ngFor="let result of searchResults">
                 <app-search-result-tile [searchItem]="result"></app-search-result-tile>
             </li>
         </ol>
     </ng-container>
 </div>
+
+<ng-template #loader>
+    <div class="d-flex justify-content-center">
+        <div class="spinner-border mt-2" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+</ng-template>

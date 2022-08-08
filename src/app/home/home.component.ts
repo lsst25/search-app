@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl} from "@angular/forms";
 import {SearchService} from "../core/search/search.service";
 import {SearchResult} from "../core/search/search.interface";
+import {Observable} from "rxjs";
 
 @Component({
     selector: 'app-home',
@@ -15,19 +16,21 @@ export class HomeComponent implements OnInit {
 
     constructor(private search: SearchService) {}
 
+    get isLoading$(): Observable<boolean> {
+        return this.search.isLoading$;
+    }
+
     ngOnInit(): void {
         this.search.searchResultsSubject.subscribe(
             results => this.searchResults = [...results]
         )
+    }
 
-        this.searchInput.valueChanges.subscribe(
-            value => {
-                if (value === null) {
-                    return;
-                }
-                this.search.performLiveSearch(value);
-            }
-        )
+    public onInput(): void {
+        if (this.searchInput.value === null) {
+            return;
+        }
+        this.search.performLiveSearch(this.searchInput.value);
     }
 
     public onScroll():void {
