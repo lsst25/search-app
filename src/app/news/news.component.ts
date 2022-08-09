@@ -11,6 +11,7 @@ import {SearchHttpService} from "../core/search/search-http.service";
 })
 export class NewsComponent implements OnInit {
     private readonly PAGINATION_STEP: number = 20;
+    private readonly NEWS_SEARCH_WORD: string = 'latest';
 
     public newsResults: NewsResult[] = [];
 
@@ -48,7 +49,7 @@ export class NewsComponent implements OnInit {
     }
 
     private getLatestNews(offset: number): Observable<NewsResult[]> {
-        return this.getNewsResults('latest', offset);
+        return this.getNewsResults(this.NEWS_SEARCH_WORD, offset);
     }
 
     public loadLatestNews(): void {
@@ -60,7 +61,7 @@ export class NewsComponent implements OnInit {
 
         const previousNews = [...this.newsResults];
 
-        this.getNewsResults('latest', this.paginationOffset).pipe(
+        this.getNewsResults(this.NEWS_SEARCH_WORD, this.paginationOffset).pipe(
             finalize(() => this.isLoadingPaginationSubject.next(false))
         )
             .subscribe({

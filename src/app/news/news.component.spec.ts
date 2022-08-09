@@ -5,8 +5,7 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {NO_ERRORS_SCHEMA} from "@angular/core";
 import {SearchServiceMock} from "../mocks/search-service-mock";
 import {SearchHttpService} from "../core/search/search-http.service";
-import {NEWS_RESPONSE, NEWS_RESULTS} from "../mocks/mock-consts";
-import {of} from "rxjs";
+import {NEWS_RESULTS} from "../mocks/mock-consts";
 
 const PAGINATION_STEP: number = 20;
 
@@ -76,7 +75,7 @@ describe('NewsComponent', () => {
     });
 
     it('should add new results to newsResults array when loading pagination', () => {
-        component.loadLatestNews()
+        component.loadLatestNews();
 
         expect(component.newsResults).toEqual([...NEWS_RESULTS, ...NEWS_RESULTS]);
     });
