@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component} from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
 import {SearchResult} from "../core/search/search.interface";
-import {BehaviorSubject, finalize, map, Observable, tap} from "rxjs";
+import {BehaviorSubject, finalize, first, map, Observable, tap} from "rxjs";
 import {SearchHttpService} from "../core/search/search-http.service";
 
 @Component({
@@ -46,7 +46,8 @@ export class HomeComponent {
         this.currentSearchValue = searchValue;
 
         this.getSearchResults(searchValue, this.paginationOffset).pipe(
-            finalize(() => this.isLoadingSubject.next(false))
+            finalize(() => this.isLoadingSubject.next(false)),
+            first()
         )
             .subscribe(result => {
                 this.searchResults = [...result];
@@ -65,7 +66,8 @@ export class HomeComponent {
         this.isLoadingPaginationSubject.next(true);
 
         this.getSearchResults(this.currentSearchValue, this.paginationOffset).pipe(
-            finalize(() => this.isLoadingPaginationSubject.next(false))
+            finalize(() => this.isLoadingPaginationSubject.next(false)),
+            first()
              )
             .subscribe({
                 next: result => {

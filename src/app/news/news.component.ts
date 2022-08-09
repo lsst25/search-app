@@ -1,6 +1,6 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
 import {NewsResult} from "../core/search/search.interface";
-import {BehaviorSubject, finalize, map, Observable, tap} from "rxjs";
+import {BehaviorSubject, finalize, first, map, Observable, tap} from "rxjs";
 import {SearchHttpService} from "../core/search/search-http.service";
 
 @Component({
@@ -9,7 +9,7 @@ import {SearchHttpService} from "../core/search/search-http.service";
     styleUrls: ['./news.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NewsComponent implements OnInit {
+export class NewsComponent implements OnInit, OnDestroy {
     private readonly PAGINATION_STEP: number = 20;
     private readonly NEWS_SEARCH_WORD: string = 'latest';
 
@@ -37,7 +37,8 @@ export class NewsComponent implements OnInit {
         this.isLoadingSubject.next(true);
 
         this.getLatestNews(this.paginationOffset).pipe(
-            finalize(() => this.isLoadingSubject.next(false))
+            finalize(() => this.isLoadingSubject.next(false)),
+            first()
         )
             .subscribe({
                 next: (news) => {
@@ -62,7 +63,8 @@ export class NewsComponent implements OnInit {
         const previousNews = [...this.newsResults];
 
         this.getNewsResults(this.NEWS_SEARCH_WORD, this.paginationOffset).pipe(
-            finalize(() => this.isLoadingPaginationSubject.next(false))
+            finalize(() => this.isLoadingPaginationSubject.next(false)),
+            first()
         )
             .subscribe({
                 next: (news) => {
@@ -104,5 +106,9 @@ export class NewsComponent implements OnInit {
 
     public trackByFn(index: number, {title}: NewsResult): string {
         return title;
+    }
+
+    public ngOnDestroy(): void {
+
     }
 }

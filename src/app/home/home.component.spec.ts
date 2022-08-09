@@ -59,6 +59,7 @@ describe('HomeComponent', () => {
     it('should cancel pagination increment in case of error when loading pagination',
         () => {
             const cancelPaginationSpy = spyOn<any>(component, 'canselPaginationOffset').and.callThrough();
+
             setSearchInputModelValue('test-value');
             component.onSubmit();
 
