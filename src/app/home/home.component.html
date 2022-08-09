@@ -30,6 +30,7 @@
             <app-search-result-tile [searchItem]="result"></app-search-result-tile>
         </li>
     </ol>
+
     <ng-container *ngIf="isLoadingPagination$ | async">
         <app-spinner [fixedBottom]="true"></app-spinner>
     </ng-container>

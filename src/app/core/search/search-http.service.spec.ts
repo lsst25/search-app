@@ -3,7 +3,7 @@ import {TestBed} from '@angular/core/testing';
 import {SearchHttpService} from './search-http.service';
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
 import {NEWS_RESPONSE, SEARCH_RESPONSE} from "../../mocks/mock-consts";
-import {NewsSearchResponse, SearchResponse, SearchResult} from "./search.interface";
+import {NewsSearchResponse, SearchResponse} from "./search.interface";
 
 describe('SearchHttpService', () => {
     let service: SearchHttpService;
@@ -21,7 +21,7 @@ describe('SearchHttpService', () => {
         expect(service).toBeTruthy();
     });
 
-    it('should be called with appropriate params and return SearchResponse when called without mode argument', () => {
+    it('should be called with appropriate params and return SearchResponse', () => {
         const expectedUrl = '/search.json?q=test&start=0&num=10';
         let actualResult: SearchResponse | undefined;
 
@@ -37,12 +37,12 @@ describe('SearchHttpService', () => {
         expect(actualResult).toEqual(SEARCH_RESPONSE);
     });
 
-    it('should be called with appropriate params and return NewsResponse when called with mode argument "news"', () => {
+    it('should be called with appropriate params and return NewsResponse', () => {
         const expectedUrl = '/search.json?q=test&start=0&num=10&tbm=nws';
         let actualResult: NewsSearchResponse | undefined;
 
-        service.search('test', 0, 10, 'news').subscribe(
-            response => actualResult = response as NewsSearchResponse
+        service.searchNews('test', 0, 10).subscribe(
+            response => actualResult = response
         );
 
         const request = controller.expectOne(expectedUrl);

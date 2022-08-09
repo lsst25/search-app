@@ -1,11 +1,11 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {NewsComponent} from './news.component';
-import {ReactiveFormsModule} from "@angular/forms";
 import {NO_ERRORS_SCHEMA} from "@angular/core";
+import {NEWS_RESULTS} from "../mocks/mock-consts";
+import {ReactiveFormsModule} from "@angular/forms";
 import {SearchServiceMock} from "../mocks/search-service-mock";
 import {SearchHttpService} from "../core/search/search-http.service";
-import {NEWS_RESULTS} from "../mocks/mock-consts";
+import {NewsComponent} from './news.component';
 
 const PAGINATION_STEP: number = 20;
 
@@ -38,21 +38,21 @@ describe('NewsComponent', () => {
     });
 
     it('should call search method of SearchHttpService on init', () => {
-        const spy = spyOn(searchService, 'search').and.callThrough();
+        const spy = spyOn(searchService, 'searchNews').and.callThrough();
         component.ngOnInit();
 
         expect(spy).toHaveBeenCalledTimes(1);
     });
 
     it('should call search method of SearchHttpService after calling loadLatestNews', () => {
-        const spy = spyOn(searchService, 'search').and.callThrough();
+        const spy = spyOn(searchService, 'searchNews').and.callThrough();
         component.loadLatestNews();
 
         expect(spy).toHaveBeenCalledTimes(1);
     });
 
     it('should call resetNews method after init',() => {
-        const spy = spyOn<any>(component, 'resetNews');
+        const spy = spyOn<any>(component, 'resetNews').and.callThrough();
         component.ngOnInit();
 
         expect(spy).toHaveBeenCalledTimes(1);
