@@ -4,11 +4,12 @@
      [infiniteScrollThrottle]="50"
      (scrolled)="loadSearchResults()">
 
-    <form [formGroup]="searchForm"
-          (ngSubmit)="onSubmit()"
-          data-testid="search-form">
+    <form   class="mb-2 mt-2"
+            [formGroup]="searchForm"
+            (ngSubmit)="onSubmit()"
+            data-testid="search-form">
 
-        <div class="input-group mb-3 mt-2">
+        <div class="input-group">
             <input type="search"
                    class="form-control"
                    placeholder="Search"
@@ -23,6 +24,10 @@
             </button>
         </div>
     </form>
+
+    <app-mini-card *ngIf="totalSearchResults > 0">
+        Total search results found <app-badge>{{ totalSearchResults }}</app-badge>
+    </app-mini-card>
 
     <ol class="results-list"
         *ngIf="!(isLoading$ | async); else loader">

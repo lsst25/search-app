@@ -2,11 +2,13 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
 import {HomeRoutingModule} from './home-routing.module';
-import {HomeComponent} from './home.component';
-import {SearchResultTileComponent} from './search-result-tile/search-result-tile.component';
 import {ReactiveFormsModule} from "@angular/forms";
 import {InfiniteScrollModule} from "ngx-infinite-scroll";
-import {SpinnerComponent} from "../loaders/spinner/spinner.component";
+import {HomeComponent} from './home.component';
+import {SearchResultTileComponent} from './search-result-tile/search-result-tile.component';
+import {BadgeComponent} from "../shared/badge/badge.component";
+import {MiniCardComponent} from "../shared/mini-card/mini-card.component";
+import {SpinnerComponent} from "../shared/loaders/spinner/spinner.component";
 
 
 @NgModule({
@@ -19,8 +21,9 @@ import {SpinnerComponent} from "../loaders/spinner/spinner.component";
         HomeRoutingModule,
         ReactiveFormsModule,
         InfiniteScrollModule,
-        SpinnerComponent
+        SpinnerComponent,
+        BadgeComponent,
+        MiniCardComponent
     ]
 })
-export class HomeModule {
-}
+export class HomeModule {}

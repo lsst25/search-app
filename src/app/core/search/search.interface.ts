@@ -8,7 +8,6 @@ export interface SearchResult {
     snippet: string;
     displayed_link: string;
     link: string;
-    about_page_link: string;
 }
 
 export interface SearchResponse extends BaseResponse{

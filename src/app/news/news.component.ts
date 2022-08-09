@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {NewsResult} from "../core/search/search.interface";
 import {BehaviorSubject, finalize, first, map, Observable, tap} from "rxjs";
 import {SearchHttpService} from "../core/search/search-http.service";
+import {NewsResult} from "../core/search/search.interface";
 
 @Component({
     selector: 'app-news',

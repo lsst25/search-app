@@ -6,14 +6,12 @@ export const SEARCH_RESULTS: SearchResult[] = [
         snippet: 'test',
         displayed_link: 'test',
         link: 'test',
-        about_page_link: 'test',
     },
     {
         title: 'test',
         snippet: 'test',
         displayed_link: 'test',
         link: 'test',
-        about_page_link: 'test',
     }
 ];
 

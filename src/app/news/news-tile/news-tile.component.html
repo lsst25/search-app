@@ -1,6 +1,6 @@
 <div class="card mb-3">
     <div class="row g-0">
-        <div class="col-md-2">
+        <div class="image-container col-md-2">
             <img [src]="newsItem.thumbnail"
                  class="img-fluid rounded m-1"
                  alt="picture"
@@ -10,7 +10,9 @@
         <div class="col-md-10">
             <div class="card-body">
                 <h5 class="card-title">
-                    <a class="card-link" [href]="newsItem.link">
+                    <a class="card-link"
+                       target="_blank"
+                       [href]="newsItem.link">
                         {{ newsItem.title }}
                     </a>
                 </h5>

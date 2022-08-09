@@ -2,8 +2,14 @@
 
 .card {
   max-width: $news-tile-max-width;
-}
 
-.card-link {
-  text-decoration: none;
+  .card-link {
+    text-decoration: none;
+  }
+
+  .image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }

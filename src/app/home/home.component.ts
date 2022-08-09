@@ -1,8 +1,8 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component} from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
-import {SearchResult} from "../core/search/search.interface";
 import {BehaviorSubject, finalize, first, map, Observable, tap} from "rxjs";
 import {SearchHttpService} from "../core/search/search-http.service";
+import {SearchResult} from "../core/search/search.interface";
 
 @Component({
     selector: 'app-home',
@@ -14,8 +14,9 @@ export class HomeComponent {
     private readonly PAGINATION_STEP: number = 20;
 
     private paginationOffset: number = 0;
-    private totalSearchResults: number = 0;
     private currentSearchValue: string = '';
+    public totalSearchResults: number = 0;
+    public searchResults: SearchResult[] = [];
 
     private isLoadingSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     private isLoadingPaginationSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
@@ -23,16 +24,13 @@ export class HomeComponent {
     public isLoading$: Observable<boolean> = this.isLoadingSubject.asObservable();
     public isLoadingPagination$: Observable<boolean> = this.isLoadingPaginationSubject.asObservable();
 
-    public searchResults: SearchResult[] = [];
-
     public searchForm = new FormGroup({
         searchInput: new FormControl('')
     });
 
     constructor(private searchHttp: SearchHttpService,
                 private cd: ChangeDetectorRef
-    ) {
-    }
+    ) {}
 
     public onSubmit(): void {
         if (!this.searchForm.get('searchInput')!.value) {
