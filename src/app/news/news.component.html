@@ -10,16 +10,11 @@
             <app-news-tile [newsItem]="result"></app-news-tile>
         </li>
     </ol>
-    <ng-container *ngIf="(isLoadingPagination$ | async)"
-                  [ngTemplateOutlet]="loader">
+    <ng-container *ngIf="isLoadingPagination$ | async">
+        <app-spinner [fixedBottom]="true"></app-spinner>
     </ng-container>
 </div>
 
 <ng-template #loader>
-    <div class="d-flex justify-content-center mb-3 text-primary"
-         [ngClass]="{'fixed-bottom': isLoadingPagination$ | async}">
-        <div class="spinner-border mt-2" role="status">
-            <span class="visually-hidden">Loading...</span>
-        </div>
-    </div>
+    <app-spinner></app-spinner>
 </ng-template>

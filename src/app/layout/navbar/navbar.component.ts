@@ -6,7 +6,7 @@ import {ChangeDetectionStrategy, Component} from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NavbarComponent {
-  public isMenuCollapsed = true;
+  public isMenuCollapsed: boolean = true;
 
   public toggleMenu(): void {
     this.isMenuCollapsed = !this.isMenuCollapsed;

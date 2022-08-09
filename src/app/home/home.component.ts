@@ -7,6 +7,7 @@ import {SearchHttpService} from "../core/search/search-http.service";
 @Component({
     selector: 'app-home',
     templateUrl: './home.component.html',
+    styleUrls: ['./home.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HomeComponent {
@@ -30,17 +31,22 @@ export class HomeComponent {
 
     constructor(private searchHttp: SearchHttpService,
                 private cd: ChangeDetectorRef
-    ) {}
+    ) {
+    }
 
     public onSubmit(): void {
         if (!this.searchForm.get('searchInput')!.value) {
             return;
         }
 
-        this.initSearch(this.searchForm.get('searchInput')!.value as string);
+        this.initSearch(this.searchForm.get('searchInput')!.value);
     }
 
-    public initSearch(searchValue: string): void {
+    public initSearch(searchValue: string | null): void {
+        if (!searchValue) {
+            return;
+        }
+
         this.resetSearch();
         this.isLoadingSubject.next(true);
         this.currentSearchValue = searchValue;
@@ -68,7 +74,7 @@ export class HomeComponent {
         this.getSearchResults(this.currentSearchValue, this.paginationOffset).pipe(
             finalize(() => this.isLoadingPaginationSubject.next(false)),
             first()
-             )
+        )
             .subscribe({
                 next: result => {
                     this.searchResults = [...previousSearchResults, ...result];
@@ -100,10 +106,7 @@ export class HomeComponent {
         return this.searchHttp.search(searchValue, items, this.PAGINATION_STEP)
             .pipe(
                 tap(response => this.totalSearchResults = response.search_information.total_results),
-                map(response => {
-                    if (!('organic_results' in response)) return [];
-                    return response.error ? [] : response.organic_results
-                }),
+                map(response => response.error ? [] : response.organic_results),
             );
     }
 

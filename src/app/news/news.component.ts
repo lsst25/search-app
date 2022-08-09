@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {NewsResult} from "../core/search/search.interface";
 import {BehaviorSubject, finalize, first, map, Observable, tap} from "rxjs";
 import {SearchHttpService} from "../core/search/search-http.service";
@@ -9,7 +9,7 @@ import {SearchHttpService} from "../core/search/search-http.service";
     styleUrls: ['./news.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NewsComponent implements OnInit, OnDestroy {
+export class NewsComponent implements OnInit {
     private readonly PAGINATION_STEP: number = 20;
     private readonly NEWS_SEARCH_WORD: string = 'latest';
 
@@ -81,13 +81,10 @@ export class NewsComponent implements OnInit, OnDestroy {
     }
 
     private getNewsResults(searchValue: string, items: number): Observable<NewsResult[]> {
-        return this.searchHttp.search(searchValue, items, this.PAGINATION_STEP, 'news')
+        return this.searchHttp.searchNews(searchValue, items, this.PAGINATION_STEP)
             .pipe(
                 tap(response => this.totalNewsResults = response.search_information.total_results),
-                map(response => {
-                    if (!('news_results' in response)) return [];
-                    return response.error ? [] : response.news_results
-                }),
+                map(response => response.error ? [] : response.news_results)
             );
     }
 
@@ -106,9 +103,5 @@ export class NewsComponent implements OnInit, OnDestroy {
 
     public trackByFn(index: number, {title}: NewsResult): string {
         return title;
-    }
-
-    public ngOnDestroy(): void {
-
     }
 }

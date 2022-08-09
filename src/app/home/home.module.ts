@@ -6,6 +6,7 @@ import {HomeComponent} from './home.component';
 import {SearchResultTileComponent} from './search-result-tile/search-result-tile.component';
 import {ReactiveFormsModule} from "@angular/forms";
 import {InfiniteScrollModule} from "ngx-infinite-scroll";
+import {SpinnerComponent} from "../loaders/spinner/spinner.component";
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import {InfiniteScrollModule} from "ngx-infinite-scroll";
         CommonModule,
         HomeRoutingModule,
         ReactiveFormsModule,
-        InfiniteScrollModule
+        InfiniteScrollModule,
+        SpinnerComponent
     ]
 })
 export class HomeModule {

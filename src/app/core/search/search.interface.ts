@@ -31,11 +31,11 @@ export interface NewsResult {
     title: string;
 }
 
-type SearchMode = 'nws';
+export type SearchModeParam = 'nws';
 
 export interface SearchParamsObject {
     q: string,
     start: number,
     num: number,
-    tbm?: SearchMode
+    tbm?: SearchModeParam
 }

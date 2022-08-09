@@ -8,5 +8,5 @@ import {NewsResult} from "../../core/search/search.interface";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NewsTileComponent {
-  @Input() newsItem!: NewsResult;
+  @Input() public newsItem!: NewsResult;
 }

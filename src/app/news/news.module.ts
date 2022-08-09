@@ -5,6 +5,7 @@ import {NewsRoutingModule} from './news-routing.module';
 import {NewsComponent} from './news.component';
 import {NewsTileComponent} from './news-tile/news-tile.component';
 import {InfiniteScrollModule} from "ngx-infinite-scroll";
+import {SpinnerComponent} from "../loaders/spinner/spinner.component";
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import {InfiniteScrollModule} from "ngx-infinite-scroll";
     imports: [
         CommonModule,
         NewsRoutingModule,
-        InfiniteScrollModule
+        InfiniteScrollModule,
+        SpinnerComponent
     ]
 })
 export class NewsModule {
