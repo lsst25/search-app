@@ -1,11 +1,9 @@
 <div class="card mb-2">
-    <div class="card-body">
-        <h5 class="card-title">{{ searchItem.title }}</h5>
-        <p class="card-text">{{ searchItem.snippet }}</p>
-        <a class="card-link"
-           target="_blank"
-           [href]="searchItem.link">
-            {{searchItem.displayed_link}}
-        </a>
-    </div>
+  <div class="card-body">
+    <h5 class="card-title">{{ searchItem.title }}</h5>
+    <p class="card-text">{{ searchItem.snippet }}</p>
+    <a class="card-link" target="_blank" [href]="searchItem.link">
+      {{ searchItem.displayed_link }}
+    </a>
+  </div>
 </div>

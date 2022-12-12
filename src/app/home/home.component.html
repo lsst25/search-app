@@ -1,46 +1,45 @@
-<div class="home-container container-fluid"
-     infiniteScroll
-     [infiniteScrollDistance]="2.5"
-     [infiniteScrollThrottle]="50"
-     (scrolled)="loadSearchResults()">
+<div
+  class="home-container container-fluid"
+  infiniteScroll
+  [infiniteScrollDistance]="2.5"
+  [infiniteScrollThrottle]="50"
+  (scrolled)="loadSearchResults()"
+>
+  <form
+    class="mb-2 mt-2"
+    [formGroup]="searchForm"
+    (ngSubmit)="onSubmit()"
+    data-testid="search-form"
+  >
+    <div class="input-group">
+      <input
+        type="search"
+        class="form-control"
+        placeholder="Search"
+        aria-label="Recipient's username"
+        [formControlName]="'searchInput'"
+        data-testid="search-input"
+      />
 
-    <form   class="mb-2 mt-2"
-            [formGroup]="searchForm"
-            (ngSubmit)="onSubmit()"
-            data-testid="search-form">
+      <button class="btn btn-outline-primary" type="submit">Search</button>
+    </div>
+  </form>
 
-        <div class="input-group">
-            <input type="search"
-                   class="form-control"
-                   placeholder="Search"
-                   aria-label="Recipient's username"
-                   [formControlName]="'searchInput'"
-                   data-testid="search-input">
+  <app-mini-card *ngIf="totalSearchResults > 0">
+    Total search results found <app-badge>{{ totalSearchResults }}</app-badge>
+  </app-mini-card>
 
-            <button class="btn btn-outline-primary"
-                    type="submit">
+  <ol class="results-list" *ngIf="!(isLoading$ | async); else loader">
+    <li *ngFor="let result of searchResults; trackBy: trackByFn">
+      <app-search-result-tile [searchItem]="result"></app-search-result-tile>
+    </li>
+  </ol>
 
-                Search
-            </button>
-        </div>
-    </form>
-
-    <app-mini-card *ngIf="totalSearchResults > 0">
-        Total search results found <app-badge>{{ totalSearchResults }}</app-badge>
-    </app-mini-card>
-
-    <ol class="results-list"
-        *ngIf="!(isLoading$ | async); else loader">
-        <li *ngFor="let result of searchResults; trackBy: trackByFn">
-            <app-search-result-tile [searchItem]="result"></app-search-result-tile>
-        </li>
-    </ol>
-
-    <ng-container *ngIf="isLoadingPagination$ | async">
-        <app-spinner [fixedBottom]="true"></app-spinner>
-    </ng-container>
+  <ng-container *ngIf="isLoadingPagination$ | async">
+    <app-spinner [fixedBottom]="true"></app-spinner>
+  </ng-container>
 </div>
 
 <ng-template #loader>
-    <app-spinner></app-spinner>
+  <app-spinner></app-spinner>
 </ng-template>

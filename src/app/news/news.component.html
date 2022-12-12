@@ -1,20 +1,20 @@
-<div class="container-fluid mt-2"
-     infiniteScroll
-     [infiniteScrollDistance]="2.5"
-     [infiniteScrollThrottle]="50"
-     (scrolled)="loadLatestNews()"
+<div
+  class="container-fluid mt-2"
+  infiniteScroll
+  [infiniteScrollDistance]="2.5"
+  [infiniteScrollThrottle]="50"
+  (scrolled)="loadLatestNews()"
 >
-    <ol class="results-list"
-        *ngIf="!(isLoading$ | async); else loader">
-        <li *ngFor="let result of newsResults; trackBy: trackByFn">
-            <app-news-tile [newsItem]="result"></app-news-tile>
-        </li>
-    </ol>
-    <ng-container *ngIf="isLoadingPagination$ | async">
-        <app-spinner [fixedBottom]="true"></app-spinner>
-    </ng-container>
+  <ol class="results-list" *ngIf="!(isLoading$ | async); else loader">
+    <li *ngFor="let result of newsResults; trackBy: trackByFn">
+      <app-news-tile [newsItem]="result"></app-news-tile>
+    </li>
+  </ol>
+  <ng-container *ngIf="isLoadingPagination$ | async">
+    <app-spinner [fixedBottom]="true"></app-spinner>
+  </ng-container>
 </div>
 
 <ng-template #loader>
-    <app-spinner></app-spinner>
+  <app-spinner></app-spinner>
 </ng-template>
