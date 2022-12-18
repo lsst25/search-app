@@ -8,10 +8,18 @@ import { LayoutComponent } from './layout/layout.component';
 import { NavbarComponent } from './layout/navbar/navbar.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { SearchRequestsInterceptor } from './http/search-requests.interceptor';
+import { StoreModule } from '@ngrx/store';
+import { newsReducer } from './news/news.reduser';
 
 @NgModule({
   declarations: [AppComponent, LayoutComponent, NavbarComponent],
-  imports: [BrowserModule, AppRoutingModule, NgbModule, HttpClientModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    NgbModule,
+    HttpClientModule,
+    StoreModule.forRoot({ news: newsReducer }),
+  ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
