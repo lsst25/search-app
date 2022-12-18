@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { NgModule } from '@angular/core'
+import { RouterModule, Routes } from '@angular/router'
 
 const routes: Routes = [
   {
@@ -11,7 +11,7 @@ const routes: Routes = [
     loadChildren: () => import('./news/news.module').then((m) => m.NewsModule),
   },
   { path: '**', redirectTo: './' },
-];
+]
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

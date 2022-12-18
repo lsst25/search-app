@@ -2,11 +2,11 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-} from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { BehaviorSubject, finalize, first, map, Observable, tap } from 'rxjs';
-import { SearchHttpService } from '../core/search/search-http.service';
-import { SearchResult } from '../core/search/search.interface';
+} from '@angular/core'
+import { FormControl, FormGroup } from '@angular/forms'
+import { BehaviorSubject, finalize, first, map, Observable, tap } from 'rxjs'
+import { SearchHttpService } from '../core/search/search-http.service'
+import { SearchResult } from '../core/search/search.interface'
 
 @Component({
   selector: 'app-home',
@@ -15,25 +15,25 @@ import { SearchResult } from '../core/search/search.interface';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent {
-  private readonly PAGINATION_STEP: number = 20;
+  private readonly PAGINATION_STEP: number = 20
 
-  private paginationOffset: number = 0;
-  private currentSearchValue: string = '';
-  public totalSearchResults: number = 0;
-  public searchResults: SearchResult[] = [];
+  private paginationOffset: number = 0
+  private currentSearchValue: string = ''
+  public totalSearchResults: number = 0
+  public searchResults: SearchResult[] = []
 
   private isLoadingSubject: BehaviorSubject<boolean> =
-    new BehaviorSubject<boolean>(false);
+    new BehaviorSubject<boolean>(false)
   private isLoadingPaginationSubject: BehaviorSubject<boolean> =
-    new BehaviorSubject<boolean>(false);
+    new BehaviorSubject<boolean>(false)
 
-  public isLoading$: Observable<boolean> = this.isLoadingSubject.asObservable();
+  public isLoading$: Observable<boolean> = this.isLoadingSubject.asObservable()
   public isLoadingPagination$: Observable<boolean> =
-    this.isLoadingPaginationSubject.asObservable();
+    this.isLoadingPaginationSubject.asObservable()
 
   public searchForm = new FormGroup({
     searchInput: new FormControl(''),
-  });
+  })
 
   constructor(
     private searchHttp: SearchHttpService,
@@ -42,20 +42,20 @@ export class HomeComponent {
 
   public onSubmit(): void {
     if (!this.searchForm.get('searchInput')!.value) {
-      return;
+      return
     }
 
-    this.initSearch(this.searchForm.get('searchInput')!.value);
+    this.initSearch(this.searchForm.get('searchInput')!.value)
   }
 
   public initSearch(searchValue: string | null): void {
     if (!searchValue) {
-      return;
+      return
     }
 
-    this.resetSearch();
-    this.isLoadingSubject.next(true);
-    this.currentSearchValue = searchValue;
+    this.resetSearch()
+    this.isLoadingSubject.next(true)
+    this.currentSearchValue = searchValue
 
     this.getSearchResults(searchValue, this.paginationOffset)
       .pipe(
@@ -63,10 +63,10 @@ export class HomeComponent {
         first()
       )
       .subscribe((result) => {
-        this.searchResults = [...result];
-        this.incrementPaginationOffset();
-        this.cd.markForCheck();
-      });
+        this.searchResults = [...result]
+        this.incrementPaginationOffset()
+        this.cd.markForCheck()
+      })
   }
 
   public loadSearchResults(): void {
@@ -74,12 +74,12 @@ export class HomeComponent {
       this.searchResults.length >= this.totalSearchResults ||
       !this.currentSearchValue
     ) {
-      return;
+      return
     }
 
-    const previousSearchResults = [...this.searchResults];
+    const previousSearchResults = [...this.searchResults]
 
-    this.isLoadingPaginationSubject.next(true);
+    this.isLoadingPaginationSubject.next(true)
 
     this.getSearchResults(this.currentSearchValue, this.paginationOffset)
       .pipe(
@@ -88,29 +88,29 @@ export class HomeComponent {
       )
       .subscribe({
         next: (result) => {
-          this.searchResults = [...previousSearchResults, ...result];
-          this.cd.markForCheck();
+          this.searchResults = [...previousSearchResults, ...result]
+          this.cd.markForCheck()
         },
         error: () => {
-          this.searchResults = [...previousSearchResults];
-          this.canselPaginationOffset();
-          this.cd.markForCheck();
+          this.searchResults = [...previousSearchResults]
+          this.canselPaginationOffset()
+          this.cd.markForCheck()
         },
-      });
-    this.incrementPaginationOffset();
+      })
+    this.incrementPaginationOffset()
   }
 
   private resetSearch(): void {
-    this.paginationOffset = 0;
-    this.totalSearchResults = 0;
+    this.paginationOffset = 0
+    this.totalSearchResults = 0
   }
 
   private incrementPaginationOffset(): void {
-    this.paginationOffset += this.PAGINATION_STEP;
+    this.paginationOffset += this.PAGINATION_STEP
   }
 
   private canselPaginationOffset(): void {
-    this.paginationOffset -= this.PAGINATION_STEP;
+    this.paginationOffset -= this.PAGINATION_STEP
   }
 
   private getSearchResults(
@@ -126,10 +126,10 @@ export class HomeComponent {
               response.search_information.total_results)
         ),
         map((response) => (response.error ? [] : response.organic_results))
-      );
+      )
   }
 
   public trackByFn(index: number, { title }: SearchResult): string {
-    return title;
+    return title
   }
 }

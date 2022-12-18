@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { NewsResult } from '../../core/search/search.interface';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core'
+import { NewsResult } from '../../core/search/search.interface'
 
 @Component({
   selector: 'app-news-tile',
@@ -8,5 +8,5 @@ import { NewsResult } from '../../core/search/search.interface';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NewsTileComponent {
-  @Input() public newsItem!: NewsResult;
+  @Input() public newsItem!: NewsResult
 }

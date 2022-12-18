@@ -3,7 +3,7 @@ import {
   NewsResult,
   SearchResponse,
   NewsSearchResponse,
-} from '../core/search/search.interface';
+} from '../core/search/search.interface'
 
 export const SEARCH_RESULTS: SearchResult[] = [
   {
@@ -18,7 +18,7 @@ export const SEARCH_RESULTS: SearchResult[] = [
     displayed_link: 'test',
     link: 'test',
   },
-];
+]
 
 export const NEWS_RESULTS: NewsResult[] = [
   {
@@ -35,14 +35,14 @@ export const NEWS_RESULTS: NewsResult[] = [
     link: 'test',
     thumbnail: 'test',
   },
-];
+]
 
 export const SEARCH_RESPONSE: SearchResponse = {
   search_information: { total_results: 300 },
   organic_results: SEARCH_RESULTS,
-};
+}
 
 export const NEWS_RESPONSE: NewsSearchResponse = {
   search_information: { total_results: 300 },
   news_results: NEWS_RESULTS,
-};
+}

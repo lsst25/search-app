@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { SearchResult } from '../../core/search/search.interface';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core'
+import { SearchResult } from '../../core/search/search.interface'
 
 @Component({
   selector: 'app-search-result-tile',
@@ -7,5 +7,5 @@ import { SearchResult } from '../../core/search/search.interface';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchResultTileComponent {
-  @Input() public searchItem!: SearchResult;
+  @Input() public searchItem!: SearchResult
 }
