@@ -9,7 +9,7 @@ import { NavbarComponent } from './layout/navbar/navbar.component'
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http'
 import { SearchRequestsInterceptor } from './http/search-requests.interceptor'
 import { StoreModule } from '@ngrx/store'
-import { newsReducer } from './news/news.reduser';
+import { searchReducer } from './home/search.reduser';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment'
 
@@ -20,7 +20,7 @@ import { environment } from '../environments/environment'
     AppRoutingModule,
     NgbModule,
     HttpClientModule,
-    StoreModule.forRoot({ news: newsReducer }),
+    StoreModule.forRoot({ news: searchReducer }),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
   ],
   providers: [

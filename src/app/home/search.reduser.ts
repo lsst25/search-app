@@ -1,7 +1,7 @@
 import { Action, createReducer, on } from '@ngrx/store'
-import { search } from './news.actions'
+import { search } from './search.actions'
 
-interface NewsState {
+export interface SearchState {
   term: string
 }
 export const initialState = {
@@ -18,6 +18,6 @@ const _newsReducer = createReducer(
   })
 )
 
-export function newsReducer(state: NewsState | undefined, action: Action) {
+export function searchReducer(state: SearchState | undefined, action: Action) {
   return _newsReducer(state, action)
 }
