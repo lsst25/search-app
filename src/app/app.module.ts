@@ -11,7 +11,9 @@ import { SearchRequestsInterceptor } from './http/search-requests.interceptor'
 import { StoreModule } from '@ngrx/store'
 import { searchReducer } from './home/search.reduser';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { environment } from '../environments/environment'
+import { environment } from '../environments/environment';
+import { EffectsModule } from '@ngrx/effects'
+import { HomeEffects } from "./news/home.effects";
 
 @NgModule({
   declarations: [AppComponent, LayoutComponent, NavbarComponent],
@@ -22,6 +24,7 @@ import { environment } from '../environments/environment'
     HttpClientModule,
     StoreModule.forRoot({ news: searchReducer }),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
+    EffectsModule.forRoot([HomeEffects]),
   ],
   providers: [
     {

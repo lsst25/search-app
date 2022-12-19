@@ -9,7 +9,7 @@ import { SearchHttpService } from '../core/search/search-http.service'
 import { SearchResult } from '../core/search/search.interface'
 import { Store } from "@ngrx/store";
 import { SearchState } from "./search.reduser";
-import { search } from "./search.actions";
+import { searchAction } from "./search.actions";
 
 @Component({
   selector: 'app-home',
@@ -52,9 +52,9 @@ export class HomeComponent {
     if (!this.searchForm.get('searchInput')!.value) {
       return
     }
-    this.store.dispatch(search({ term: this.term }));
+    this.store.dispatch(searchAction({ term: this.term }));
 
-    this.initSearch(this.searchForm.get('searchInput')!.value)
+    this.initSearch(this.term)
   }
 
   public initSearch(searchValue: string | null): void {

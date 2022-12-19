@@ -1,5 +1,5 @@
 import { Action, createReducer, on } from '@ngrx/store'
-import { search } from './search.actions'
+import { searchAction } from './search.actions'
 
 export interface SearchState {
   term: string
@@ -10,7 +10,7 @@ export const initialState = {
 
 const _newsReducer = createReducer(
   initialState,
-  on(search, (state, { term }) => {
+  on(searchAction, (state, { term }) => {
     return {
       ...state,
       term,
