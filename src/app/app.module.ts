@@ -22,7 +22,7 @@ import { HomeEffects } from "./news/home.effects";
     AppRoutingModule,
     NgbModule,
     HttpClientModule,
-    StoreModule.forRoot({ news: searchReducer }),
+    StoreModule.forRoot({ search: searchReducer }),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
     EffectsModule.forRoot([HomeEffects]),
   ],
