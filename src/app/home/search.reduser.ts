@@ -1,11 +1,15 @@
 import { Action, createReducer, on } from '@ngrx/store'
-import { searchAction } from './search.actions'
+import { resultsLoadedAction, searchAction } from "./search.actions";
+import { state } from "@angular/animations";
+import { SearchResult } from "../core/search/search.interface";
 
 export interface SearchState {
-  term: string
+  term: string;
+  results: SearchResult[];
 }
-export const initialState = {
+export const initialState: SearchState = {
   term: '',
+  results: [],
 }
 
 const _newsReducer = createReducer(
@@ -14,6 +18,12 @@ const _newsReducer = createReducer(
     return {
       ...state,
       term,
+    }
+  }),
+  on(resultsLoadedAction, (state, { results }) => {
+    return {
+      ...state,
+      results
     }
   })
 )

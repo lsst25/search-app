@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store'
-import { SearchResponse } from "../core/search/search.interface";
+import { SearchResponse, SearchResult } from "../core/search/search.interface";
 
 export const searchAction = createAction(
   '[Home Component] Search',
@@ -8,5 +8,5 @@ export const searchAction = createAction(
 
 export const resultsLoadedAction = createAction(
   '[Home Component] Search results loaded',
-  props<{ result: SearchResponse }>()
+  props<{ results: SearchResult[] }>()
 );
