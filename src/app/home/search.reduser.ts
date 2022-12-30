@@ -1,6 +1,5 @@
 import { Action, createReducer, on } from '@ngrx/store'
 import { resultsLoadedAction, searchAction } from "./search.actions";
-import { state } from "@angular/animations";
 import { SearchResult } from "../core/search/search.interface";
 
 export interface SearchState {

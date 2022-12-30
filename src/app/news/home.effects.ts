@@ -9,7 +9,7 @@ export class HomeEffects {
 
   loadSearchResults$ = createEffect(() => this.actions$.pipe(
       ofType(searchAction),
-      mergeMap((action) => this.searchService.search(action.term, 0, 10)
+      mergeMap((action) => this.searchService.search(action.term, 0, 25)
         .pipe(
           map(response => resultsLoadedAction({ results: response.organic_results })),
           catchError(() => EMPTY)

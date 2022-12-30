@@ -14,6 +14,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects'
 import { HomeEffects } from "./news/home.effects";
+import { reducers } from "./app.state";
 
 @NgModule({
   declarations: [AppComponent, LayoutComponent, NavbarComponent],
@@ -22,7 +23,7 @@ import { HomeEffects } from "./news/home.effects";
     AppRoutingModule,
     NgbModule,
     HttpClientModule,
-    StoreModule.forRoot({ search: searchReducer }),
+    StoreModule.forRoot(reducers),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
     EffectsModule.forRoot([HomeEffects]),
   ],

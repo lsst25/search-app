@@ -2,14 +2,15 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-} from '@angular/core'
+} from "@angular/core";
 import { FormControl, FormGroup } from '@angular/forms'
 import { BehaviorSubject, finalize, first, map, Observable, tap } from 'rxjs'
 import { SearchHttpService } from '../core/search/search-http.service'
 import { SearchResult } from '../core/search/search.interface'
-import { Store } from "@ngrx/store";
-import { SearchState } from "./search.reduser";
+import { select, Store } from "@ngrx/store";
 import { searchAction } from "./search.actions";
+import { AppState } from "../app.state";
+import { selectSearchResultsState } from "./search.selectors";
 
 @Component({
   selector: 'app-home',
@@ -24,6 +25,8 @@ export class HomeComponent {
   private currentSearchValue: string = ''
   public totalSearchResults: number = 0
   public searchResults: SearchResult[] = []
+
+  public searchResults$: Observable<SearchResult[]>;
 
   private isLoadingSubject: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false)
@@ -45,8 +48,10 @@ export class HomeComponent {
   constructor(
     private searchHttp: SearchHttpService,
     private cd: ChangeDetectorRef,
-    private store: Store<SearchState>
-  ) {}
+    private store: Store<AppState>
+  ) {
+    this.searchResults$ = store.pipe(select(selectSearchResultsState));
+  }
 
   public onSubmit(): void {
     if (!this.searchForm.get('searchInput')!.value) {
@@ -54,7 +59,8 @@ export class HomeComponent {
     }
     this.store.dispatch(searchAction({ term: this.term }));
 
-    this.initSearch(this.term)
+
+    // this.initSearch(this.term)
   }
 
   public initSearch(searchValue: string | null): void {

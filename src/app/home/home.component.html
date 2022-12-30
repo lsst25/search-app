@@ -29,8 +29,8 @@
     Total search results found <app-badge>{{ totalSearchResults }}</app-badge>
   </app-mini-card>
 
-  <ol class="results-list" *ngIf="!(isLoading$ | async); else loader">
-    <li *ngFor="let result of searchResults; trackBy: trackByFn">
+  <ol class="results-list">
+    <li *ngFor="let result of (searchResults$ | async); trackBy: trackByFn">
       <app-search-result-tile [searchItem]="result"></app-search-result-tile>
     </li>
   </ol>
