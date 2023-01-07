@@ -8,7 +8,7 @@ import { BehaviorSubject, finalize, first, map, Observable, tap } from 'rxjs'
 import { SearchHttpService } from '../core/search/search-http.service'
 import { SearchResult } from '../core/search/search.interface'
 import { select, Store } from "@ngrx/store";
-import { searchAction } from "./search.actions";
+import { searchAction, loadMoreResultsAction } from "./search.actions";
 import { AppState } from "../app.state";
 import { selectSearchResultsState } from "./search.selectors";
 
@@ -58,61 +58,10 @@ export class HomeComponent {
       return
     }
     this.store.dispatch(searchAction({ term: this.term }));
-
-
-    // this.initSearch(this.term)
-  }
-
-  public initSearch(searchValue: string | null): void {
-    if (!searchValue) {
-      return
-    }
-
-    this.resetSearch()
-    this.isLoadingSubject.next(true)
-    this.currentSearchValue = searchValue
-
-    this.getSearchResults(searchValue, this.paginationOffset)
-      .pipe(
-        finalize(() => this.isLoadingSubject.next(false)),
-        first()
-      )
-      .subscribe((result) => {
-        this.searchResults = [...result]
-        this.incrementPaginationOffset()
-        this.cd.markForCheck()
-      })
   }
 
   public loadSearchResults(): void {
-    if (
-      this.searchResults.length >= this.totalSearchResults ||
-      !this.currentSearchValue
-    ) {
-      return
-    }
-
-    const previousSearchResults = [...this.searchResults]
-
-    this.isLoadingPaginationSubject.next(true)
-
-    this.getSearchResults(this.currentSearchValue, this.paginationOffset)
-      .pipe(
-        finalize(() => this.isLoadingPaginationSubject.next(false)),
-        first()
-      )
-      .subscribe({
-        next: (result) => {
-          this.searchResults = [...previousSearchResults, ...result]
-          this.cd.markForCheck()
-        },
-        error: () => {
-          this.searchResults = [...previousSearchResults]
-          this.canselPaginationOffset()
-          this.cd.markForCheck()
-        },
-      })
-    this.incrementPaginationOffset()
+    this.store.dispatch(loadMoreResultsAction());
   }
 
   private resetSearch(): void {

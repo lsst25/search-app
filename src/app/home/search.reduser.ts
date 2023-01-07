@@ -1,14 +1,20 @@
 import { Action, createReducer, on } from '@ngrx/store'
-import { resultsLoadedAction, searchAction } from "./search.actions";
+import { moreResultsLoadedAction, resultsLoadedAction, searchAction } from "./search.actions";
 import { SearchResult } from "../core/search/search.interface";
+
+export const PAGINATION_STEP = 25;
 
 export interface SearchState {
   term: string;
   results: SearchResult[];
+  page: number;
+  totalSearchResults: number;
 }
 export const initialState: SearchState = {
   term: '',
   results: [],
+  page: 1,
+  totalSearchResults: 0,
 }
 
 const _newsReducer = createReducer(
@@ -22,7 +28,14 @@ const _newsReducer = createReducer(
   on(resultsLoadedAction, (state, { results }) => {
     return {
       ...state,
-      results
+      results,
+    }
+  }),
+  on(moreResultsLoadedAction, (state, { results }) => {
+    return {
+      ...state,
+      results: [...state.results, ...results],
+      paginationOffset: state.page * PAGINATION_STEP,
     }
   })
 )
