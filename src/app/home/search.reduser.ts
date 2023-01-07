@@ -26,6 +26,7 @@ const _newsReducer = createReducer(
   on(resultsLoadedAction, (state, { results }) => {
     return {
       ...state,
+      page: 1,
       results,
     }
   }),
