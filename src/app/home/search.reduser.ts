@@ -2,8 +2,6 @@ import { Action, createReducer, on } from '@ngrx/store'
 import { moreResultsLoadedAction, resultsLoadedAction, searchAction } from "./search.actions";
 import { SearchResult } from "../core/search/search.interface";
 
-export const PAGINATION_STEP = 25;
-
 export interface SearchState {
   term: string;
   results: SearchResult[];
