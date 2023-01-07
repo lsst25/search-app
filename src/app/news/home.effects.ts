@@ -8,7 +8,7 @@ import {
   resultsLoadedAction,
   searchAction
 } from "../home/search.actions";
-import { select, Store } from "@ngrx/store";
+import { Store } from "@ngrx/store";
 import { AppState } from "../app.state";
 import { currentSearchOffsetState, selectTermState } from "../home/search.selectors";
 import { PAGINATION_STEP } from "../home/search.reduser";
