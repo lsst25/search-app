@@ -4,7 +4,7 @@ import {
   Component,
 } from "@angular/core";
 import { FormControl, FormGroup } from '@angular/forms'
-import { BehaviorSubject, finalize, first, map, Observable, tap } from 'rxjs'
+import { BehaviorSubject, Observable } from 'rxjs'
 import { SearchHttpService } from '../core/search/search-http.service'
 import { SearchResult } from '../core/search/search.interface'
 import { select, Store } from "@ngrx/store";
