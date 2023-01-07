@@ -36,7 +36,6 @@ const _newsReducer = createReducer(
       ...state,
       results: [...state.results, ...results],
       page: state.page + 1,
-      paginationOffset: state.page * PAGINATION_STEP,
     }
   })
 )

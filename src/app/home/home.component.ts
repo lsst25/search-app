@@ -19,10 +19,6 @@ import { selectSearchResultsState } from "./search.selectors";
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent {
-  private readonly PAGINATION_STEP: number = 20
-
-  private paginationOffset: number = 0
-  private currentSearchValue: string = ''
   public totalSearchResults: number = 0
   public searchResults: SearchResult[] = []
 
@@ -62,35 +58,6 @@ export class HomeComponent {
 
   public loadSearchResults(): void {
     this.store.dispatch(loadMoreResultsAction());
-  }
-
-  private resetSearch(): void {
-    this.paginationOffset = 0
-    this.totalSearchResults = 0
-  }
-
-  private incrementPaginationOffset(): void {
-    this.paginationOffset += this.PAGINATION_STEP
-  }
-
-  private canselPaginationOffset(): void {
-    this.paginationOffset -= this.PAGINATION_STEP
-  }
-
-  private getSearchResults(
-    searchValue: string,
-    items: number
-  ): Observable<SearchResult[]> {
-    return this.searchHttp
-      .search(searchValue, items, this.PAGINATION_STEP)
-      .pipe(
-        tap(
-          (response) =>
-            (this.totalSearchResults =
-              response.search_information.total_results)
-        ),
-        map((response) => (response.error ? [] : response.organic_results))
-      )
   }
 
   public trackByFn(index: number, { title }: SearchResult): string {
