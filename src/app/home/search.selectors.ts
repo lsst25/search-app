@@ -2,7 +2,7 @@ import { selectSearchState } from "../app.state";
 import { createSelector } from "@ngrx/store";
 import { SearchState } from "./search.reduser";
 
-const PAGINATION_STEP = 25;
+export const PAGINATION_STEP = 25;
 
 export const selectSearchResultsState = createSelector(
   selectSearchState,

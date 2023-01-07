@@ -10,8 +10,7 @@ import {
 } from "../home/search.actions";
 import { Store } from "@ngrx/store";
 import { AppState } from "../app.state";
-import { currentSearchOffsetState, selectTermState } from "../home/search.selectors";
-import { PAGINATION_STEP } from "../home/search.reduser";
+import { currentSearchOffsetState, PAGINATION_STEP, selectTermState } from "../home/search.selectors";
 
 @Injectable()
 export class HomeEffects {
