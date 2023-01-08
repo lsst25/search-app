@@ -9,7 +9,6 @@ import { NavbarComponent } from './layout/navbar/navbar.component'
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http'
 import { SearchRequestsInterceptor } from './http/search-requests.interceptor'
 import { StoreModule } from '@ngrx/store'
-import { searchReducer } from './home/search.reduser';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects'
