@@ -5,4 +5,10 @@ describe('My First Test', () => {
     cy.contains('Home')
     cy.contains('News')
   })
+
+  it('Do nothing in case of searching with empty search input', () => {
+    cy.visit('/')
+    cy.get('[data-testid="search-button"]').click()
+    cy.get('[data-testid="search-result-tile"').should('not.exist')
+  })
 })
