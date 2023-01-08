@@ -9,6 +9,7 @@ describe('My First Test', () => {
   it('Do nothing in case of searching with empty search input', () => {
     cy.visit('/')
     cy.get('[data-testid="search-button"]').click()
+    cy.wait(5000)
     cy.get('[data-testid="search-result-tile"').should('not.exist')
   })
 })
