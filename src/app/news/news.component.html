@@ -6,7 +6,7 @@
   (scrolled)="loadLatestNews()"
 >
   <ol class="results-list" *ngIf="!(isLoading$ | async); else loader">
-    <li *ngFor="let result of newsResults; trackBy: trackByFn">
+    <li *ngFor="let result of newsResults; trackBy: trackByFn" @enterLeave>
       <app-news-tile [newsItem]="result"></app-news-tile>
     </li>
   </ol>

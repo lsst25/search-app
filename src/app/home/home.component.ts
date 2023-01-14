@@ -12,23 +12,14 @@ import { searchAction, loadMoreResultsAction } from "./search.actions";
 import { AppState } from "../app.state";
 import { selectSearchResultsState } from "./search.selectors";
 import { animate, style, transition, trigger } from "@angular/animations";
+import { enterLeaveTrigger } from "../shared/animations/enter-leave";
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: [
-    trigger('enterLeave', [
-      transition(':enter', [
-        style({ opacity: 0, transform: 'scale(0.97)' }),
-        animate('250ms ease-out')
-      ]),
-      transition(':leave', [
-        animate(50, style({ opacity: 0 }))
-      ])
-    ])
-  ],
+  animations: [ enterLeaveTrigger ],
 })
 export class HomeComponent {
   public totalSearchResults: number = 0

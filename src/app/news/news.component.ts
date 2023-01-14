@@ -7,12 +7,14 @@ import {
 import { BehaviorSubject, finalize, first, map, Observable, tap } from 'rxjs'
 import { SearchHttpService } from '../core/search/search-http.service'
 import { NewsResult } from '../core/search/search.interface'
+import { enterLeaveTrigger } from "../shared/animations/enter-leave";
 
 @Component({
   selector: 'app-news',
   templateUrl: './news.component.html',
   styleUrls: ['./news.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [ enterLeaveTrigger ],
 })
 export class NewsComponent implements OnInit {
   private readonly PAGINATION_STEP: number = 20
