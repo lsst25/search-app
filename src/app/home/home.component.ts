@@ -19,11 +19,14 @@ import { animate, style, transition, trigger } from "@angular/animations";
   styleUrls: ['./home.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [
-    trigger('enter', [
+    trigger('enterLeave', [
       transition(':enter', [
         style({ opacity: 0, transform: 'scale(0.97)' }),
-        animate(200)
+        animate('250ms ease-out')
       ]),
+      transition(':leave', [
+        animate(50, style({ opacity: 0 }))
+      ])
     ])
   ],
 })
