@@ -14,11 +14,13 @@ import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects'
 import { HomeEffects } from "./news/home.effects";
 import { reducers } from "./app.state";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
 @NgModule({
   declarations: [AppComponent, LayoutComponent, NavbarComponent],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     NgbModule,
     HttpClientModule,
