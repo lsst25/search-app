@@ -33,7 +33,8 @@
   </app-mini-card>
 
   <ol class="results-list">
-    <li *ngFor="let result of (searchResults$ | async); trackBy: trackByFn">
+    <li *ngFor="let result of (searchResults$ | async); trackBy: trackByFn"
+        @enter>
       <app-search-result-tile [searchItem]="result"></app-search-result-tile>
     </li>
   </ol>
